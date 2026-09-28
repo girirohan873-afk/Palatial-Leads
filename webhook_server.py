@@ -26,8 +26,15 @@ def new_lead():
         "source": data.get("source", "Website"),
     }
 
-    save_lead(lead)
-    on_new_lead(lead)  # sends the instant WhatsApp
+    try:
+        save_lead(lead)
+    except Exception as e:
+        return jsonify({"failed_step": "google_sheet", "error": type(e).__name__, "detail": str(e)[:300]}), 500
+
+    try:
+        on_new_lead(lead)  # sends the instant WhatsApp
+    except Exception as e:
+        return jsonify({"failed_step": "twilio_whatsapp", "error": type(e).__name__, "detail": str(e)[:300]}), 500
 
     return jsonify({"status": "ok", "lead": lead}), 200
 
