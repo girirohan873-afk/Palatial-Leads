@@ -23,7 +23,7 @@ EXAMPLE test call (from your terminal, once running):
     -H "Content-Type: application/json" \
     -d '{"name":"Asha Mehta","phone":"+919812345678","email":"asha@example.com","source":"Website"}'
 """
-
+   import os
 from flask import Flask, request, jsonify
 from twilio_lead_followup import on_new_lead
 from sheets_lead_source import add_lead
@@ -58,4 +58,4 @@ def new_lead():
 
 
 if __name__ == "__main__":
-    app.run(port=5000, debug=True)
+       app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)), debug=False)
